@@ -2,18 +2,18 @@ package main
 
 type Analyzer struct {
 	expression    string
-	states        map[rune]*State
+	states        map[string]*State
 	currentState  *State
 	tmpMatchedExp []rune
 	matchedExp    string
 }
 
-func NewAnalyzer(expression string, states map[rune]*State) *Analyzer {
+func NewAnalyzer(expression string, states map[string]*State) *Analyzer {
 	a := new(Analyzer)
 
 	a.expression = expression
 	a.states = states
-	a.currentState = states['A']
+	a.currentState = states["A1"]
 
 	return a
 }
@@ -24,20 +24,14 @@ func (a *Analyzer) Run() {
 			a.tmpMatchedExp = append(a.tmpMatchedExp, c)
 
 			if state.isAcceptable {
-				a.currentState = a.states['A']
+				a.currentState = a.states["A1"]
 				a.matchedExp = string(a.tmpMatchedExp)
 			} else {
 				a.currentState = state
 			}
-		} else if state, exists := a.states['A'].transitions[c]; exists != false {
-			a.tmpMatchedExp = []rune{}
-			a.currentState = state
-
-			a.tmpMatchedExp = append(a.tmpMatchedExp, c)
-
 		} else {
 			a.tmpMatchedExp = []rune{}
-			a.currentState = a.states['A']
+			a.currentState = a.states["A1"]
 		}
 	}
 }
